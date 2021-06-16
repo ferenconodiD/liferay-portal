@@ -1,0 +1,61 @@
+definition {
+
+	property testray.main.component.name = "Blogs";
+
+	setUp {
+		User.firstLoginUI();
+	}
+
+	test AddBlogsEntry {
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Blogs");
+
+		Blogs.addEntry(
+			entryContent = "This is the test content, for it to be saved as draft.",
+			entryTitle = "Test title");
+	}
+
+	test DeleteNewEntry {
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Blogs");
+
+		Blogs.addEntry(
+			entryContent = "Doesn't really matter.",
+			entryTitle = "To be deleted");
+
+		BlogsNavigator.moveToRecycleBinCP(entryTitle = "To be deleted");
+
+		ProductMenu.gotoPortlet(
+			category = "Recycle Bin",
+			portlet = "Recycle Bin");
+
+		RecycleBin.deleteCP(
+			assetName = "To be deleted",
+			assetType = "Blogs Entry");
+	}
+
+	test ModifyNewEntry {
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Blogs");
+
+		Blogs.addEntry(
+			entryContent = "Lorem ipsum dolor sit amet",
+			entrySubtitle = "Delete it completely",
+			entryTitle = "Newly Added blog, change it");
+
+		BlogsNavigator.gotoEditCP(entryTitle = "Newly Added blog, change it");
+
+		BlogsEntry.editEntryContent(
+			entryContent = "Lorem ipsum dolor sit amet",
+			entrySubtitle = "Delete it completely",
+			entrySubtitleEdit = " ",
+			entryTitle = "Newly Added blog, change it",
+			entryTitleEdit = "Title changed");
+
+		PortletEntry.publish();
+	}
+
+}
