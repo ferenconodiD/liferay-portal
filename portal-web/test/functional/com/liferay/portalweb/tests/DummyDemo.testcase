@@ -1,6 +1,7 @@
 definition {
 
 	property testray.main.component.name = "Blogs";
+	property portal.upstream = "Feri";
 
 	setUp {
 		User.firstLoginUI();
