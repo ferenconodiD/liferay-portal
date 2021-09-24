@@ -595,6 +595,64 @@ definition {
 		}
 	}
 
+	@description = "LPS-123218 TC-3 Assertion for: last name cannot be used for user matching even if LDAP import is enabled."
+	@priority = "4"
+	test AssertLastNameCannotBeUsedForUserMatchingEvenWithLDAPEnabled {
+		property apacheds.enabled = "true";
+		property app.server.bundles.size = "0";
+		property portal.upstream = "feri";
+		property test.name.skip.portal.instance = "SAML#AssertLastNameCannotBeUsedForUserMatchingEvenWithLDAPEnabled";
+
+		PortalSettings.addLDAPServer(LDAPServerName = "ApacheDS Server");
+
+		PortalSettings.editLDAPServer(LDAPServerName = "ApacheDS Server");
+
+		PortalSettings.testLDAPConnection();
+
+		var enableSettingList = "enabled,ldapImportEnabled";
+
+		PortalSettings.configureLDAPSetting(enableSettingList = "${enableSettingList}");
+
+		PortalSettings.viewEnabledLDAPSetting(enableSettingList = "${enableSettingList}");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Security",
+			panel = "Control Panel",
+			portlet = "SAML Admin");
+
+		SAMLRole.configure(
+			samlEntityID = "samlsp",
+			samlRoleType = "Service Provider");
+
+		SAMLNavigation.gotoIdentityProviderConnections();
+
+		AssertClick(
+			locator1 = "CPSAMLAdminIdentityProviderConnection#ADD_IDENTITY_PROVIDER_BUTTON",
+			value1 = "Add Identity Provider");
+
+		Type(
+			locator1 = "TextInput#SAML_NAME_FIELD",
+			value1 = "samlidp");
+
+		Type(
+			locator1 = "CPSAMLAdminIdentityProviderConnection#IDENTITY_PROVIDER_CONNECTION_ENTITY_ID_FIELD",
+			value1 = "samlidp");
+
+		Click(locator1 = "CPSAMLAdminIdentityProviderConnection#IDENTITY_PROVIDER_CONNECTION_USER_RESOLUTION_ATTRIBUTE");
+
+		SAMLPortlet.addIdentityProviderConnectionAttributeMapping(idpAttributeMapping = "lastName");
+
+		Click(
+			key_index = "0",
+			locator1 = "CPSAMLAdminIdentityProviderConnection#IDENTITY_PROVIDER_CONNECTION_USE_TO_MATCH_USERS_RADIO");
+
+		Button.clickSave();
+
+		AssertConsoleTextPresent(value1 = "No attribute mapping selected for user matching");
+
+		AssertElementPresent(locator1 = "CPSAMLAdminIdentityProviderConnection#IDENTITY_PROVIDER_CONNECTION_ERROR_NO_MAPPING_SELECTED");
+	}
+
 	@description = "This is a use case for LPS-39013."
 	@priority = "4"
 	test AssertSAMLSPUserInformationUpdatesAfterChangingOnIdP {
