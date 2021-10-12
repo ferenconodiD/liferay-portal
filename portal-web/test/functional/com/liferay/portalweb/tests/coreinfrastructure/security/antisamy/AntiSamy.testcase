@@ -27,6 +27,8 @@ definition {
 	@description = "This is a use case for LRQA-4988."
 	@priority = "4"
 	test AssertNoWikiJavascript {
+		property portal.upstream = "feri";
+
 		task ("Add PG") {
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
@@ -64,6 +66,7 @@ definition {
 	@priority = "5"
 	test AssertSpecificRulesWorksForModel {
 		property antisamy.enabled = "true";
+		property portal.upstream = "feri";
 		property test.name.skip.portal.instance = "AntiSamy#AssertSpecificRulesWorksForModel";
 
 		task ("Verify address in console") {
@@ -131,6 +134,8 @@ definition {
 	@description = "This is a use case for LRQA-42763."
 	@priority = "4"
 	test AssertWebContentJavascript {
+		property portal.upstream = "feri";
+
 		task ("Add public page") {
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
