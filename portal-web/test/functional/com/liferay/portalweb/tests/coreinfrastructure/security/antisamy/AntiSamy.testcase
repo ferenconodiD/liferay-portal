@@ -26,22 +26,22 @@ definition {
 
 	@description = "This is a use case for LRQA-4988."
 	@priority = "4"
-	test AssertNoWikiJavascript {
+	test ScriptInWikiPortletShouldBeSanitized {
 		property portal.upstream = "feri";
 
-		task ("Add PG") {
+		task ("Add public widget page") {
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
 				portlet = "Pages");
 
 			SitePages.addPublicPage(pageName = "AntiSamy Test Page");
+		}
 
+		task ("Add Wiki portlet and insert JS as content") {
 			Navigator.gotoPage(pageName = "AntiSamy Test Page");
 
 			Portlet.addPG(portletName = "Wiki");
-		}
 
-		task ("Add front page PG") {
 			var wikiPageContent = '''
 					<p id='demo'>PASS</p>
 
@@ -55,7 +55,7 @@ definition {
 				wikiPageContent = "${wikiPageContent}");
 		}
 
-		task ("Assert PG content and title") {
+		task ("Assert: script is sanitized so page content remains unchanged") {
 			WikiPage.viewPG(
 				wikiPageContent = "PASS",
 				wikiPageTitle = "FrontPage");
@@ -133,17 +133,18 @@ definition {
 
 	@description = "This is a use case for LRQA-42763."
 	@priority = "4"
-	test AssertWebContentJavascript {
+	test ScriptInWebContentDisplayPortletShouldBeSanitized {
 		property portal.upstream = "feri";
 
-		task ("Add public page") {
+		task ("Add public widget page") {
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
 				portlet = "Pages");
 
 			SitePages.addPublicPage(pageName = "Web Content Display Page");
 		}
-		task ("Add and view WC") {
+
+		task ("Add Web Content Display portlet and insert JS as content") {
 			Navigator.gotoPage(pageName = "Web Content Display Page");
 
 			Portlet.addPG(portletName = "Web Content Display");
@@ -159,7 +160,9 @@ definition {
 			WebContent.addPGViaWCD(
 				webContentContent = "${webContentContent}",
 				webContentTitle = "WC WebContent Title");
+		}
 
+		task ("Assert: script is sanitized so page content remains unchanged") {
 			WebContent.viewPGViaWCD(
 				webContentContent = "PASS",
 				webContentTitle = "Web Content Title");
