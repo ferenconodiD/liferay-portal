@@ -103,10 +103,20 @@ definition {
 		task ("Assert CKEditor source value") {
 			CKEditor.assertSourceValue(sourceValue = "<p>Hello Liferay</p>");
 		}
+	}
+
+	@description = "This is a use case for LPS-112581 and LPS-115803."
+	@priority = "5"
+	test Something {
+		property antisamy.enabled = "true";
+		property portal.upstream = "feri";
+		property test.name.skip.portal.instance = "AntiSamy#Something";
+
+		task ("Verify address in console") {
+			SAMLNavigation.viewConsoleValue(consoleValue = "STARTED com.liferay.portal.security.antisamy");
+		}
 
 		task ("Edit configuration file url") {
-			Navigator.openURL();
-
 			ApplicationsMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
