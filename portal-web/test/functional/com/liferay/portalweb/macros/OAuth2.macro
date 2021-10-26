@@ -691,6 +691,11 @@ definition {
 	}
 
 	macro viewApplicationInAuthorizationsTable {
+
+		WaitForVisible(
+			key_rowEntry = "${tableEntry}",
+            locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME");
+
 		AssertTextEquals(
 			key_columnName = "lfr-authorizations",
 			key_tableEntry = "${tableEntry}",
