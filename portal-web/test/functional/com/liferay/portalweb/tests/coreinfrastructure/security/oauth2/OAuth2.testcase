@@ -1081,6 +1081,7 @@ definition {
 	@priority = "3"
 	test RevokeAuthorizationViaKebabMenuWithRememberDevice {
 		property test.name.skip.portal.instance = "OAuth2#RevokeAuthorizationViaKebabMenuWithRememberDevice";
+		property portal.upstream = "marcell";
 
 		task ("Add and edit an external application") {
 			OAuth2.addAndEditExternalApplication(
@@ -1148,6 +1149,7 @@ definition {
 	@priority = "3"
 	test RevokeAuthorizationViaKebabMenuwithTrustedDevice {
 		property test.name.skip.portal.instance = "OAuth2#RevokeAuthorizationViaKebabMenuwithTrustedDevice";
+		property portal.upstream = "marcell";
 
 		task ("Add and edit external application") {
 			OAuth2.addAndEditExternalApplication(
